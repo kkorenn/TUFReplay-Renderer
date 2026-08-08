@@ -1,0 +1,21 @@
+TUFReplayRenderer/Infrastructure/FFmpeg/FFmpegNativeLibrary.cs
+  s_6dd6db7b2dc311::t_271fec1cb832bf 134-141,148-154
+TUFReplayRenderer/Info.json
+  s_6dd6db7b2dc311::t_30367b287d0bf2 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "1097932fdbbf6f729fd12a5845aafb49745523c6",
+  "prompts": {},
+  "sessions": {
+    "s_6dd6db7b2dc311": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ab83e955-d79f-43c1-841e-10adf76dd9f4",
+        "model": "claude-fable-5"
+      },
+      "human_author": "koren <131921956+kkorenn@users.noreply.github.com>"
+    }
+  }
+}
