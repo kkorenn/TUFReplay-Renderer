@@ -131,12 +131,27 @@ public static class FFmpegNativeLibrary
     try
     {
       ffmpeg.RootPath = directory ?? string.Empty;
+
+      // FFmpeg.AutoGen 5+ binds every function lazily through DynamicallyLoadedBindings; until
+      // Initialize() installs the resolving delegates, every call throws NotSupportedException no
+      // matter what is on disk. Re-initializing per attempt resets the delegates so each candidate
+      // directory gets a fresh resolution against the RootPath set above.
+      DynamicallyLoadedBindings.ThrowErrorIfFunctionNotFound = true;
+      DynamicallyLoadedBindings.Initialize();
+
       _avcodecVersion = ffmpeg.avcodec_version();
       if (_avcodecVersion == 0)
       {
         failure = "avcodec_version returned 0";
         return false;
       }
+
+      // Touch the other libraries the renderer needs so a partial install fails here, with a
+      // directory attached, instead of mid-render.
+      ffmpeg.avformat_version();
+      ffmpeg.avutil_version();
+      ffmpeg.swscale_version();
+      ffmpeg.swresample_version();
       return true;
     }
     catch (Exception exception)
