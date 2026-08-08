@@ -1,0 +1,25 @@
+<Project>
+  <PropertyGroup>
+    <AdofaiDir Condition="'$(AdofaiDir)' == '' and '$(ADOFAI_DIR)' != ''">$(ADOFAI_DIR)</AdofaiDir>
+    <AdofaiDir Condition="'$(AdofaiDir)' == ''"
+      >$(HOME)/Library/Application Support/Steam/steamapps/common/A Dance of Fire and Ice</AdofaiDir>
+
+    <AdofaiManaged Condition="'$(AdofaiManaged)' == '' and '$(ADOFAI_MANAGED)' != ''">$(ADOFAI_MANAGED)</AdofaiManaged>
+    <AdofaiManaged Condition="'$(AdofaiManaged)' == ''"
+      >$(AdofaiDir)/ADanceOfFireAndIce.app/Contents/Resources/Data/Managed</AdofaiManaged>
+
+    <AdofaiMods Condition="'$(AdofaiMods)' == '' and '$(ADOFAI_MODS_DIR)' != ''">$(ADOFAI_MODS_DIR)</AdofaiMods>
+    <AdofaiMods Condition="'$(AdofaiMods)' == ''">$(AdofaiDir)/Mods</AdofaiMods>
+
+    <UnityModManagerDll Condition="'$(UnityModManagerDll)' == ''"
+      >$(AdofaiManaged)/UnityModManager/UnityModManager.dll</UnityModManagerDll>
+    <HarmonyDll Condition="'$(HarmonyDll)' == ''">$(AdofaiManaged)/UnityModManager/0Harmony.dll</HarmonyDll>
+    <AdofaiIpcDll Condition="'$(AdofaiIpcDll)' == ''">$(AdofaiMods)/AdofaiIpc/AdofaiIpc.dll</AdofaiIpcDll>
+
+    <!-- The base mod this renderer extends. Defaults to the sibling TUFReplay repository's build
+         output; point TUFREPLAY_DLL at an installed TUFReplay.dll to build against that instead. -->
+    <TUFReplayDll Condition="'$(TUFReplayDll)' == '' and '$(TUFREPLAY_DLL)' != ''">$(TUFREPLAY_DLL)</TUFReplayDll>
+    <TUFReplayDll Condition="'$(TUFReplayDll)' == ''"
+      >$(MSBuildThisFileDirectory)../TUFReplay/TUFReplay/bin/Debug/TUFReplay.dll</TUFReplayDll>
+  </PropertyGroup>
+</Project>
