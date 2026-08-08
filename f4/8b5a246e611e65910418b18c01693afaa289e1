@@ -1,0 +1,131 @@
+TUFReplayRenderer/Infrastructure/FFmpeg/FFmpegRuntimeInstaller.cs
+  s_6dd6db7b2dc311::t_a9947c4634ce13 1-327
+  s_6dd6db7b2dc311::t_08c2dacd4776c2 328-337
+Directory.Build.props
+  s_6dd6db7b2dc311::t_827a1eac2ad3a3 1-25
+TUFReplayRenderer/Features/Ipc/RenderIpcHandlers.cs
+  s_6dd6db7b2dc311::t_1f808cf846cdd0 17
+  s_6dd6db7b2dc311::t_1cd409c2cf089a 3-6
+  s_6dd6db7b2dc311::t_e78a01a0c4a306 1-2,7-16,18-216
+TUFReplayRenderer/Features/Ipc/RendererIpcFeature.cs
+  s_6dd6db7b2dc311::t_8a657fa40a9340 1-79
+README.md
+  s_6dd6db7b2dc311::t_4575ce06c37695 1-84
+  s_6dd6db7b2dc311::t_796d86f987c905 85-91
+TUFReplayRenderer/Info.json
+  s_6dd6db7b2dc311::t_d0cd3b4e226cbc 1-10
+.env.example
+  s_6dd6db7b2dc311::t_e51cffed88f26b 1-17
+  s_6dd6db7b2dc311::t_02ea7cc87d831c 18-22
+scripts/run.sh
+  s_6dd6db7b2dc311::t_f34be09fd6c806 1-184
+  s_6dd6db7b2dc311::t_7eb9a4c48afbf7 185-274
+TUFReplayRenderer/TUFReplayRenderer.csproj
+  s_6dd6db7b2dc311::t_1f707109d42206 1-99
+TUFReplayRenderer/Bootstrap/RendererRegistry.cs
+  s_6dd6db7b2dc311::t_c9eafc13fdb538 1-63
+TUFReplayRenderer/Bootstrap/RenderCaptureBridgeAdapter.cs
+  s_6dd6db7b2dc311::t_9e319102db66e3 1-34
+TUFReplayRenderer/Features/Ipc/RendererHealthIpcHandlers.cs
+  s_6dd6db7b2dc311::t_0eb70bb9d78445 1-16
+TUFReplayRenderer/Application/Render/ReplayRenderCoordinator.cs
+  s_6dd6db7b2dc311::t_c015592dae614f 3
+  s_6dd6db7b2dc311::t_fa43fa67150f0c 1-2,4-439
+TUFReplayRenderer/Main.cs
+  s_6dd6db7b2dc311::t_c310161150047b 1-101
+TUFReplayRenderer/Ipc/Dtos/RendererHealthDtos.cs
+  s_6dd6db7b2dc311::t_aefb7ae3669fb9 1-11
+TUFReplayRenderer/Features/Render/RenderFeature.cs
+  s_6dd6db7b2dc311::t_df142e3af6a33a 59-68
+  s_6dd6db7b2dc311::t_ca558d7534f92a 56-58
+  s_6dd6db7b2dc311::t_da3e33c2c1b43e 69-71
+  s_6dd6db7b2dc311::t_80dbca3645058f 1-55,72-99
+.csharpierrc.json
+  s_6dd6db7b2dc311::t_7e232ffc2a51c5 1-5
+.gitignore
+  s_6dd6db7b2dc311::t_e8a2f1780282a2 1-14
+THIRD_PARTY_NOTICES.md
+  s_6dd6db7b2dc311::t_52cf007afd09f7 1-68
+TUFReplayRenderer.slnx
+  s_6dd6db7b2dc311::t_bb9d2f8e417aa3 1-3
+TUFReplayRenderer/Application/Render/Audio/AudioResampler.cs
+  s_6dd6db7b2dc311::t_59ff9e8bf3fb71 1-116
+TUFReplayRenderer/Application/Render/Audio/AudioSpectrumGenerator.cs
+  s_6dd6db7b2dc311::t_85d0f808b6ab73 1-251
+TUFReplayRenderer/Application/Render/Audio/AudioSyncCalculator.cs
+  s_6dd6db7b2dc311::t_000852551940e4 1-46
+TUFReplayRenderer/Application/Render/Audio/Filter/Gain.cs
+  s_6dd6db7b2dc311::t_1aea401b313455 1-24
+TUFReplayRenderer/Application/Render/Audio/Filter/HardClip.cs
+  s_6dd6db7b2dc311::t_ed33ef1be2b527 1-36
+TUFReplayRenderer/Application/Render/Audio/Filter/IAudioFilter.cs
+  s_6dd6db7b2dc311::t_ac634d2ac39684 1-17
+TUFReplayRenderer/Application/Render/Audio/Filter/RMSCompressor.cs
+  s_6dd6db7b2dc311::t_acce801a588ebd 1-231
+TUFReplayRenderer/Application/Render/Audio/MicrophoneRenderSource.cs
+  s_6dd6db7b2dc311::t_44c2c239102083 1-266
+TUFReplayRenderer/Application/Render/Audio/OfflineAudioMixer.cs
+  s_6dd6db7b2dc311::t_108fbfc5ce3630 1-924
+TUFReplayRenderer/Application/Render/Audio/RenderAudioPreparer.cs
+  s_6dd6db7b2dc311::t_fabc0e18191cb2 1-214
+TUFReplayRenderer/Application/Render/ReplayRenderSession.cs
+  s_6dd6db7b2dc311::t_881e5345efea91 1-1603
+TUFReplayRenderer/Domain/Render/RenderCodec.cs
+  s_6dd6db7b2dc311::t_b41185f899fc98 1-20
+TUFReplayRenderer/Domain/Render/RenderStatus.cs
+  s_6dd6db7b2dc311::t_8cf2e9b68f9038 1-45
+TUFReplayRenderer/Domain/Render/ReplayRenderSettings.cs
+  s_6dd6db7b2dc311::t_eeed2b58a0a886 1-136
+TUFReplayRenderer/Features/Render/RenderDoTweenClock.cs
+  s_6dd6db7b2dc311::t_5072cc5969ec70 1-146
+TUFReplayRenderer/Features/Render/RenderGamePatches.cs
+  s_6dd6db7b2dc311::t_755199bd872705 1-321
+TUFReplayRenderer/Features/Render/RenderOptionalUnityPatches.cs
+  s_6dd6db7b2dc311::t_3901fcc06905a1 1-149
+TUFReplayRenderer/Features/Render/RenderPatchInstaller.cs
+  s_6dd6db7b2dc311::t_029527e7cebe47 1-222
+TUFReplayRenderer/Infrastructure/FFmpeg/FFmpegNativeEncoder.cs
+  s_6dd6db7b2dc311::t_ee5014377c1156 1-2012
+TUFReplayRenderer/Infrastructure/FFmpeg/FFmpegNativeLibrary.cs
+  s_6dd6db7b2dc311::t_108bc02a842da9 1-209
+TUFReplayRenderer/Infrastructure/Render/GPUUtil.cs
+  s_6dd6db7b2dc311::t_8eb579e7c7740b 1-213
+TUFReplayRenderer/Infrastructure/Render/RationalUtil.cs
+  s_6dd6db7b2dc311::t_5dc3cc3b2eb400 1-77
+TUFReplayRenderer/Infrastructure/Render/RegistryUtil.cs
+  s_6dd6db7b2dc311::t_96d3bd5f761ec8 1-153
+TUFReplayRenderer/Infrastructure/Render/RenderColorShader.cs
+  s_6dd6db7b2dc311::t_05c5d9ad3eb77b 1-67
+TUFReplayRenderer/Infrastructure/Render/RenderFrameHooks.cs
+  s_6dd6db7b2dc311::t_d9ebcdbdd383aa 1-78
+TUFReplayRenderer/Infrastructure/Render/RenderFrameReader.cs
+  s_6dd6db7b2dc311::t_62d872a7ead506 1-338
+TUFReplayRenderer/Infrastructure/Render/RenderLog.cs
+  s_6dd6db7b2dc311::t_986407f4996475 1-15
+TUFReplayRenderer/Infrastructure/Render/RenderOutputDirectory.cs
+  s_6dd6db7b2dc311::t_6eb62d8941353a 1-90
+TUFReplayRenderer/Infrastructure/Render/RenderOverlayCanvasCapture.cs
+  s_6dd6db7b2dc311::t_d48031f18e06bd 1-131
+TUFReplayRenderer/Ipc/Dtos/RenderDtos.cs
+  s_6dd6db7b2dc311::t_dbc54c847e7182 1-109
+dotnet-tools.json
+  s_6dd6db7b2dc311::t_2d64ffcd6ed423 1-20
+scripts/tasks/prepare-lgpl-ffmpeg.sh
+  s_6dd6db7b2dc311::t_169f911e17aa9e 1-178
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "f48b5a246e611e65910418b18c01693afaa289e1",
+  "prompts": {},
+  "sessions": {
+    "s_6dd6db7b2dc311": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ab83e955-d79f-43c1-841e-10adf76dd9f4",
+        "model": "claude-fable-5"
+      },
+      "human_author": "koren <131921956+kkorenn@users.noreply.github.com>"
+    }
+  }
+}
