@@ -1,0 +1,41 @@
+TUFReplayRenderer/Infrastructure/Render/RenderFocusIllusion.cs
+  s_6dd6db7b2dc311::t_815da64bb4e712 1-110
+  s_6dd6db7b2dc311::t_463651afb3ab94 111-211
+TUFReplayRenderer/Infrastructure/Render/RenderInputEventInjector.cs
+  s_6dd6db7b2dc311::t_59841f0d690596 1-105,111
+  s_6dd6db7b2dc311::t_fd861c714bd185 106-110,112-221
+TUFReplayRenderer/Application/Render/Audio/OfflineAudioMixer.cs
+  s_6dd6db7b2dc311::t_8b43fc21b673bc 363-428,883,888-889
+TUFReplayRenderer/Application/Render/ReplayRenderCoordinator.cs
+  s_6dd6db7b2dc311::t_e1d112145a48a3 363-364
+TUFReplayRenderer/Application/Render/ReplayRenderSession.cs
+  s_6dd6db7b2dc311::t_75c79c74f8e862 233
+TUFReplayRenderer/Bootstrap/RenderCaptureBridgeAdapter.cs
+  s_6dd6db7b2dc311::t_4b338773f84084 20-22
+TUFReplayRenderer/Features/Render/RenderGamePatches.cs
+  s_6dd6db7b2dc311::t_875468051f0901 258-273
+TUFReplayRenderer/Features/Render/RenderOptionalUnityPatches.cs
+  s_6dd6db7b2dc311::t_a10d47c97b1996 92-102,109-116,132-139,163-179
+TUFReplayRenderer/Features/Render/RenderPatchInstaller.cs
+  s_6dd6db7b2dc311::t_5d93ac31cf2721 147-156
+TUFReplayRenderer/Info.json
+  s_6dd6db7b2dc311::t_0f62ea1fcbc96f 5
+TUFReplayRenderer/TUFReplayRenderer.csproj
+  s_6dd6db7b2dc311::t_0c962d4e0b497c 88-91
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "54d7e6ed017dd27eda75c1c10e83ce5a1c62adc8",
+  "prompts": {},
+  "sessions": {
+    "s_6dd6db7b2dc311": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ab83e955-d79f-43c1-841e-10adf76dd9f4",
+        "model": "claude-fable-5"
+      },
+      "human_author": "koren <131921956+kkorenn@users.noreply.github.com>"
+    }
+  }
+}
