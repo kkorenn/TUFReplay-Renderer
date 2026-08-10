@@ -144,6 +144,16 @@ public static class RenderPatchInstaller
       postfix: nameof(RenderGamePatches.PlayHitTimesDiagnosticPostfix)
     );
 
+    // Without this, hitsounds for tiles past a death keep sounding in the output, and a
+    // PlayHitTimes re-schedule doubles every still-pending hitsound (the game clears the previous
+    // batch with StopAllSounds, which under capture otherwise never reaches the mixer).
+    Optional(
+      harmony,
+      "AudioManager.StopAllSounds",
+      () => AccessTools.Method(typeof(AudioManager), "StopAllSounds"),
+      postfix: nameof(RenderGamePatches.StopAllSoundsPostfix)
+    );
+
     RenderOptionalUnityPatches.Apply(harmony, Optional);
 
     RenderLog.Info("Render patches: " + Describe());

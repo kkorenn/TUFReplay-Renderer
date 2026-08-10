@@ -17,6 +17,9 @@ internal sealed class RenderCaptureBridgeAdapter : IRenderCaptureBridge
 
   public void OnReplayStarting(string operationId) => ReplayRenderCoordinator.OnReplayStarting(operationId);
 
+  public void OnReplayInput(SkyHook.KeyLabel key, bool down, long timeUs) =>
+    TUFReplayRenderer.Infrastructure.Render.RenderInputEventInjector.OnReplayInput(key, down);
+
   public void OnReplayTerminal(
     string operationId,
     string replayState,

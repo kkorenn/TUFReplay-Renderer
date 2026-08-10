@@ -2,7 +2,7 @@
   "Id": "TUFReplay-Renderer",
   "DisplayName": "TUFReplay Renderer",
   "Author": "impl",
-  "Version": "0.1.0-beta.2",
+  "Version": "0.1.0-beta.3",
   "AssemblyName": "TUFReplayRenderer.dll",
   "EntryMethod": "TUFReplayRenderer.Main.Load",
   "Requirements": ["TUFReplay"],

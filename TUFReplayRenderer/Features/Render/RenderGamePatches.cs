@@ -255,6 +255,22 @@ public static class RenderGamePatches
     mixer.RegisterSoundEvent(snd, time - DspTimeBase, endTime - DspTimeBase, volume, conductorPitch);
   }
 
+  /// <summary>
+  /// The game silences every scheduled hitsound with StopAllSounds — on death, on quit, and right
+  /// before PlayHitTimes re-schedules a batch. Under capture the pooled sources are long recycled,
+  /// so destroying them tells the mixer nothing; mirror the stop on the offline timeline instead.
+  /// Without this, hitsounds for tiles past a death keep playing in the output, and re-scheduled
+  /// batches double up.
+  /// </summary>
+  public static void StopAllSoundsPostfix()
+  {
+    ReplayRenderSession session = ReplayRenderSession.Current;
+    OfflineAudioMixer mixer = Mixer;
+    if (mixer == null || session == null || !ReplayRenderSession.IsCapturingActive)
+      return;
+    mixer.CancelPendingSoundEvents(session.VirtualDspTime - session.DspTimeBase);
+  }
+
   /// <summary>Diagnostic: logs whether hitsound scheduling happened while capture was active.</summary>
   public static void PlayHitTimesDiagnosticPostfix()
   {

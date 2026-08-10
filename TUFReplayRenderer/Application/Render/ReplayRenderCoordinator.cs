@@ -360,6 +360,8 @@ public static class ReplayRenderCoordinator
   /// <summary>Per-frame housekeeping, driven from the pre-frame hook.</summary>
   internal static void Tick()
   {
+    Infrastructure.Render.RenderFocusIllusion.Tick();
+
     ReplayRenderSession? session;
     lock (Gate)
       session = _session;

@@ -230,6 +230,7 @@ public sealed class ReplayRenderSession : IFrameSink
     Time.captureDeltaTime = (float)(1d / _settings.RenderFps);
 
     _environmentArmedAt = Time.realtimeSinceStartupAsDouble;
+
     if (_settings.RenderAudio)
       _audioPreparer.Begin();
     if (!_settings.AudioPreviewOnly)

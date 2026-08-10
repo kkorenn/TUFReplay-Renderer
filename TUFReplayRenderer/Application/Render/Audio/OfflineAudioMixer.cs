@@ -360,6 +360,72 @@ namespace TUFReplayRenderer.Application.Render.Audio
       }
     }
 
+    /// <summary>
+    /// Mirrors AudioManager.StopAllSounds on the offline timeline: the game kills every scheduled
+    /// hitsound source on death, on quit, and right before PlayHitTimes re-schedules. Events that
+    /// have not started by <paramref name="now"/> are removed outright; events still sounding are
+    /// truncated to <paramref name="now"/>. One-shots that already finished are left untouched —
+    /// giving them an end time would turn them into loops.
+    /// </summary>
+    public void CancelPendingSoundEvents(double now)
+    {
+      lock (_lock)
+      {
+        int removed = 0;
+        int truncated = 0;
+        for (var i = _activeEvents.Count - 1; i >= 0; i--)
+        {
+          var ev = _activeEvents[i];
+          if (ev.StartTime >= now)
+          {
+            _activeEvents.RemoveAt(i);
+            removed++;
+            continue;
+          }
+
+          if (ev.EndTime >= 0)
+          {
+            if (ev.EndTime > now)
+            {
+              ev.EndTime = now;
+              truncated++;
+            }
+            continue;
+          }
+
+          var clipData =
+            ev.DirectClip ?? _clipCache.GetOrCache(ev.ClipName, _targetChannels, _targetSampleRate, allowLoad: false);
+          var effectivePitch = ev.Pitch > 0 ? ev.Pitch : 1f;
+          bool stillSounding = clipData == null || now < ev.StartTime + clipData.Duration / effectivePitch;
+          if (stillSounding)
+          {
+            ev.EndTime = now;
+            truncated++;
+          }
+        }
+        _sourceMappings.Clear();
+        if (removed > 0 || truncated > 0)
+          RenderLog.Info(
+            $"[Mixer] StopAllSounds at {now:F3}s: removed {removed} pending, truncated {truncated} events."
+          );
+      }
+    }
+
+    private double _bgmCutTime = -1.0;
+
+    /// <summary>Silences the music from <paramref name="time"/> on (the song stopping on death).</summary>
+    public void CutBGM(double time)
+    {
+      lock (_lock)
+      {
+        if (_bgmCutTime < 0 || time < _bgmCutTime)
+        {
+          _bgmCutTime = time;
+          RenderLog.Info($"[Mixer] BGM cut at {time:F3}s.");
+        }
+      }
+    }
+
     public void CacheClip(string clipName)
     {
       _clipCache.GetOrCache(clipName, _targetChannels, _targetSampleRate, allowLoad: true);
@@ -814,10 +880,13 @@ namespace TUFReplayRenderer.Application.Render.Audio
       var adjustedRelativeTime1 = relativeTime1 - totalLatency;
 
       var totalSamples = _bgmSamples.Length / _targetChannels;
+      double adjustedCutTime = _bgmCutTime >= 0 ? _bgmCutTime - totalLatency : double.MaxValue;
 
       for (int s = 0; s < samplesNeeded; s++)
       {
         double sampleTime = frameStartTime + (double)s / _targetSampleRate;
+        if (sampleTime >= adjustedCutTime)
+          break;
         double clipTime = (sampleTime - adjustedRelativeTime1) * pitch;
 
         if (clipTime >= 0 && clipTime < _bgmDuration)

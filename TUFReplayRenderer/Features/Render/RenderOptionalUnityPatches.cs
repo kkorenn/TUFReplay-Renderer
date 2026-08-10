@@ -89,11 +89,30 @@ public static class RenderOptionalUnityPatches
       null,
       nameof(StoppedPostfix)
     );
+
+    // Without this, focus-gated consumers (key viewers and the like) treat a background render as
+    // unfocused and drop or hide the replayed input.
+    optional(
+      harmony,
+      typeof(RenderOptionalUnityPatches),
+      "Application.isFocused",
+      () => AccessTools.PropertyGetter(typeof(UnityEngine.Application), "isFocused"),
+      nameof(FakeFocusPrefix),
+      null
+    );
   }
 
   // ── Patch bodies ────────────────────────────────────────────────────────────────────────────
 
   public static bool SuppressScheduledPlaybackPrefix() => !ReplayRenderSession.IsCapturingActive;
+
+  public static bool FakeFocusPrefix(ref bool __result)
+  {
+    if (!ReplayRenderSession.IsCapturingActive)
+      return true;
+    __result = true;
+    return false;
+  }
 
   public static bool OfflineSpectrumPrefix(float[] samples, int channel, FFTWindow window)
   {
@@ -110,8 +129,14 @@ public static class RenderOptionalUnityPatches
       return;
 
     // Pooled AudioSources can still map to a finished event, so the mixer decides whether the
-    // change still applies rather than retroactively repitching old audio.
-    mixer.UpdateSourcePitch(__instance, value, AudioSettings.dspTime - RenderGamePatches.DspTimeBase);
+    // change still applies rather than retroactively repitching old audio. "Now" must be on the
+    // virtual axis: event times are virtual, and the real clock runs at encode speed, not
+    // timeline speed.
+    mixer.UpdateSourcePitch(
+      __instance,
+      value,
+      RenderGamePatches.VirtualOrRealDspTime() - RenderGamePatches.DspTimeBase
+    );
   }
 
   public static void ScheduledEndTimePostfix(AudioSource __instance, double time)
@@ -135,7 +160,23 @@ public static class RenderOptionalUnityPatches
     // never "playing", and AudioManager.Update immediately recycles them with a Stop() call.
     // Without the guard that pooled Stop truncated every scheduled hitsound to its birth time and
     // the render lost all of them.
-    double now = AudioSettings.dspTime - RenderGamePatches.DspTimeBase;
+    //
+    // "Now" must be the VIRTUAL clock. Event times are virtual, and the real clock runs at encode
+    // speed: with a real-axis now, every pooled recycle Stop() that landed after an event's
+    // virtual start time stamped a bogus EndTime onto it — and an EndTime turns a one-shot into a
+    // looping sound in the mixer, which is a machine-gun burst of that hitsound in the output.
+    double now = RenderGamePatches.VirtualOrRealDspTime() - RenderGamePatches.DspTimeBase;
+
+    // The conductor's song source stopping is how the game silences music on death
+    // (scrController.FailAction calls song.Stop()); mirror it as a BGM cut on the offline
+    // timeline. Gated on an active capture so teardown stops don't clip the finished mix.
+    if (
+      ReplayRenderSession.IsCapturingActive
+      && scrConductor.instance != null
+      && __instance == scrConductor.instance.song
+    )
+      mixer.CutBGM(now);
+
     if (
       mixer.TryGetSoundEvent(__instance, out OfflineAudioMixer.SoundEvent soundEvent)
       && now > soundEvent.StartTime

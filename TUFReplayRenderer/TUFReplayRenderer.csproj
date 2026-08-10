@@ -85,6 +85,10 @@
       <HintPath>$(AdofaiManaged)/UnityEngine.ParticleSystemModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="SkyHook.Unity">
+      <HintPath>$(AdofaiManaged)/SkyHook.Unity.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="RDTools">
       <HintPath>$(AdofaiManaged)/RDTools.dll</HintPath>
       <Private>false</Private>
