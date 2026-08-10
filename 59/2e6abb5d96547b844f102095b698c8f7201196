@@ -1,0 +1,45 @@
+TUFReplayRenderer/Infrastructure/Update/RendererUpdateSettings.cs
+  s_6dd6db7b2dc311::t_8a33310e810315 1-47
+  s_6dd6db7b2dc311::t_1e478fc7f8fdc6 48-49
+TUFReplayRenderer.Loader/TUFReplayRenderer.Loader.csproj
+  s_6dd6db7b2dc311::t_d9dd68892b05b1 1-18
+TUFReplayRenderer/Infrastructure/Update/RendererAutoUpdater.cs
+  s_6dd6db7b2dc311::t_7f9870ec86bb85 1-346
+  s_6dd6db7b2dc311::t_bd822bbd18809d 347-352
+TUFReplayRenderer/Bootstrap/BridgeCompat.cs
+  s_6dd6db7b2dc311::t_c2ba74b29696cf 1-85
+TUFReplayRenderer.Loader/Entry.cs
+  s_6dd6db7b2dc311::t_d74a04bbb2a9bf 1-347
+README.md
+  s_6dd6db7b2dc311::t_b86da6f5567c01 87-102
+TUFReplayRenderer.slnx
+  s_6dd6db7b2dc311::t_f91d63f07c5ff8 2
+TUFReplayRenderer/Bootstrap/RendererRegistry.cs
+  s_6dd6db7b2dc311::t_27f04a775fe274 32-37,48-49,51-53,55-57,63-70
+TUFReplayRenderer/Features/Ipc/RenderIpcHandlers.cs
+  s_6dd6db7b2dc311::t_6700c4ba83ca2b 26,28-32,49-52,68-70
+TUFReplayRenderer/Info.json
+  s_6dd6db7b2dc311::t_cf6cb7b2384feb 5-7
+TUFReplayRenderer/Ipc/Dtos/RenderDtos.cs
+  s_6dd6db7b2dc311::t_693d693becae4c 51-58
+TUFReplayRenderer/Main.cs
+  s_6dd6db7b2dc311::t_0bbdcfbc4782f5 31,34-35,37-40,60-79
+scripts/run.sh
+  s_6dd6db7b2dc311::t_cef0436028e0d5 176-181,226-229,233-237,239,241-247,249-255,268,282,288-296
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "592e6abb5d96547b844f102095b698c8f7201196",
+  "prompts": {},
+  "sessions": {
+    "s_6dd6db7b2dc311": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ab83e955-d79f-43c1-841e-10adf76dd9f4",
+        "model": "claude-fable-5"
+      },
+      "human_author": "koren <131921956+kkorenn@users.noreply.github.com>"
+    }
+  }
+}
