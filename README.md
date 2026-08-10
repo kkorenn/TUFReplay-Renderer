@@ -84,6 +84,22 @@ default `https://github.com/kkorenn/TUFReplay-Renderer/releases/download/ffmpeg-
 manifest pins each asset's SHA-256, so re-upload requires re-packaging. `install` still bundles
 natives directly for local development.
 
+## Updating
+
+The install is auto-updatable. `Info.json` points at `TUFReplayRenderer.Loader.dll`, a tiny
+never-updated loader; the actual mod lives under `Runtime/versions/<version>/`. At runtime the mod
+checks this repository's GitHub releases in the background (respecting the in-game auto-update and
+beta toggles), downloads a newer release, verifies it against the SHA-256 in the release's
+`update.json` asset, and stages the payload under `Runtime/pending/`. The loader re-verifies the
+staged files and swaps them in at the next game launch — a running assembly's file is OS-locked,
+so the swap can only happen there. If a new payload fails to load, the loader permanently falls
+back to the previous version. Releases whose `update.json` requires a newer bridge
+(`MinBridgeApiVersion`) than the installed TUFReplay provides are skipped rather than updating
+into a disabled state.
+
+Publishing a release: `./scripts/run.sh package` produces the zip and `build/update.json`; upload
+BOTH as assets on a `v<version>` release.
+
 ## Licensing
 
 See `THIRD_PARTY_NOTICES.md`: portions are derived from ADOFAIRenderer (MIT), FFmpeg bindings are

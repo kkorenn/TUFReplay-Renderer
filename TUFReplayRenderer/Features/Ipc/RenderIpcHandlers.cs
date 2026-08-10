@@ -23,8 +23,13 @@ public static class RenderIpcHandlers
 
     return new RenderCapabilitiesDto
     {
-      Available = featureActive && FFmpegNativeLibrary.IsAvailable,
+      Available = featureActive && FFmpegNativeLibrary.IsAvailable && Bootstrap.BridgeCompat.IsOk,
       UnavailableReason = !featureActive ? "The renderer feature is disabled." : ComposeUnavailableReason(feature),
+      RendererVersion = Main.Instance?.Version,
+      TufReplayVersion = TUFReplay.Main.Instance?.Version,
+      BridgeStatus = Bootstrap.BridgeCompat.Status,
+      BridgeApiVersionDetected = Bootstrap.BridgeCompat.DetectedApiVersion,
+      BridgeApiVersionRequired = Bootstrap.BridgeCompat.RequiredApiVersion,
       FFmpegDownloadState = FFmpegRuntimeInstaller.State,
       FFmpegDownloadProgressPercent = FFmpegRuntimeInstaller.ProgressPercent,
       FFmpegVersion = FFmpegNativeLibrary.IsAvailable ? FFmpegNativeLibrary.DescribeVersion() : null,
@@ -41,6 +46,10 @@ public static class RenderIpcHandlers
   /// </summary>
   private static string ComposeUnavailableReason(RenderFeature feature)
   {
+    string bridgeProblem = Bootstrap.BridgeCompat.Describe();
+    if (bridgeProblem != null)
+      return bridgeProblem;
+
     string reason = feature.UnavailableReason;
     string download = FFmpegRuntimeInstaller.DescribeForCapabilities();
     if (download == null)
@@ -55,6 +64,9 @@ public static class RenderIpcHandlers
     // A render started right after the download finished should succeed without the UI having to
     // refresh capabilities first.
     FFmpegRuntimeInstaller.PromoteInstallOnMainThread();
+
+    if (!Bootstrap.BridgeCompat.IsOk)
+      return IpcDomainError.Create("bridge_version_mismatch", Bootstrap.BridgeCompat.Describe());
 
     if (!IpcParams.TryRequiredString(request, "runId", out string runId))
       return IpcDomainError.Create("invalid_run_id", "runId must be a non-empty string.");

@@ -173,6 +173,12 @@ copy_ffmpeg_natives() {
 build() {
   log "Building TUFReplayRenderer"
   dotnet build "$PROJECT/TUFReplayRenderer.csproj" -v minimal
+  log "Building TUFReplayRenderer.Loader"
+  dotnet build "$ROOT/TUFReplayRenderer.Loader/TUFReplayRenderer.Loader.csproj" -v minimal
+}
+
+mod_version() {
+  sed -n 's/.*"Version": "\([^"]*\)".*/\1/p' "$PROJECT/Info.json"
 }
 
 # Where the runtime downloader fetches FFmpeg from. Point this at wherever the ffmpeg-<rid>.zip
@@ -217,19 +223,36 @@ write_ffmpeg_manifest() {
   log "Wrote $destination/ffmpeg-manifest.json"
 }
 
-# Copies the built payload (dll, deps, Info.json, assets, download manifest) into <dest>.
+# Stages the full auto-updatable install layout into <dest>:
+#   Info.json + TUFReplayRenderer.Loader.dll   (never updated by the auto-updater)
+#   Runtime/Current.json                        (which payload the loader runs)
+#   Runtime/versions/<version>/                 (the updatable payload: dll, deps, assets)
 stage_payload() {
   local destination="$1"
   local out="$PROJECT/bin/Debug"
+  local loader_out="$ROOT/TUFReplayRenderer.Loader/bin/Debug"
+  local version
+  version="$(mod_version)"
+  [ -n "$version" ] || fail "Could not read the version from Info.json."
+  local payload="$destination/Runtime/versions/$version"
 
-  mkdir -p "$destination"
-  cp "$out/TUFReplayRenderer.dll" "$destination/"
-  cp "$out/FFmpeg.AutoGen.dll" "$destination/"
-  [ -f "$out/TUFReplayRenderer.pdb" ] && cp "$out/TUFReplayRenderer.pdb" "$destination/" || true
+  mkdir -p "$payload"
   cp "$PROJECT/Info.json" "$destination/"
+  cp "$loader_out/TUFReplayRenderer.Loader.dll" "$destination/"
+  printf '{\n  "SchemaVersion": 1,\n  "Current": "%s",\n  "Previous": null\n}\n' "$version" \
+    > "$destination/Runtime/Current.json"
 
-  mkdir -p "$destination/Assets"
-  cp -R "$PROJECT/Assets/render" "$destination/Assets/render"
+  cp "$out/TUFReplayRenderer.dll" "$payload/"
+  cp "$out/FFmpeg.AutoGen.dll" "$payload/"
+  [ -f "$out/TUFReplayRenderer.pdb" ] && cp "$out/TUFReplayRenderer.pdb" "$payload/" || true
+
+  mkdir -p "$payload/Assets"
+  cp -R "$PROJECT/Assets/render" "$payload/Assets/render"
+}
+
+# The directory the ffmpeg download manifest belongs in (the payload reads it from PayloadPath).
+payload_dir() {
+  printf '%s/Runtime/versions/%s\n' "$1" "$(mod_version)"
 }
 
 install_mod() {
@@ -242,7 +265,7 @@ install_mod() {
   # also carry the manifest so the runtime downloader can self-heal a wiped native directory.
   copy_ffmpeg_natives "$destination" optional
   make_ffmpeg_archives
-  write_ffmpeg_manifest "$destination"
+  write_ffmpeg_manifest "$(payload_dir "$destination")"
   log "Installed $MOD_ID"
 }
 
@@ -256,12 +279,21 @@ package() {
   log "Staging package at $stage"
   rm -rf "$stage"
   stage_payload "$stage"
-  write_ffmpeg_manifest "$stage"
+  write_ffmpeg_manifest "$(payload_dir "$stage")"
 
   local archive="$ROOT/build/$MOD_ID.zip"
   rm -f "$archive"
   (cd "$ROOT/build/package" && zip -qr "$archive" "$MOD_ID")
   log "Packaged $archive"
+
+  # update.json: the release asset the in-game auto-updater reads. MinBridgeApiVersion guards
+  # against auto-updating into a renderer that the installed TUFReplay's bridge cannot serve.
+  local sha version
+  sha="$(shasum -a 256 "$archive" | awk '{print $1}')"
+  version="$(mod_version)"
+  printf '{\n  "Version": "%s",\n  "Zip": "%s.zip",\n  "Sha256": "%s",\n  "MinBridgeApiVersion": 1\n}\n' \
+    "$version" "$MOD_ID" "$sha" > "$ROOT/build/update.json"
+  log "Wrote build/update.json (upload it as a release asset next to the zip)"
   log "Release assets to upload alongside it: build/ffmpeg-{osx,win-x64,linux-x64}.zip -> $FFMPEG_RELEASE_BASE_URL"
 }
 

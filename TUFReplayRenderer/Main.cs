@@ -28,9 +28,16 @@ public sealed class Main
     try
     {
       Instance = new Main(modEntry);
+      Infrastructure.Update.RendererUpdateSettings.Initialize(Instance.InstallPath);
       modEntry.OnToggle = OnToggle;
       modEntry.OnUnload = OnUnload;
+      modEntry.OnGUI = OnGUI;
+      modEntry.OnSaveGUI = OnSaveGUI;
       Instance.Enable();
+
+      // Runs while the game keeps booting; a found update stages itself and the loader applies
+      // it at the next launch.
+      Infrastructure.Update.RendererAutoUpdater.BeginCheckInBackground();
       return true;
     }
     catch (Exception exception)
@@ -48,6 +55,26 @@ public sealed class Main
   public void LogException(string context, Exception exception)
   {
     ModEntry.Logger.Error("[" + context + "] " + exception);
+  }
+
+  private static void OnGUI(UnityModManager.ModEntry modEntry)
+  {
+    Infrastructure.Update.RendererUpdateSettings settings = Infrastructure.Update.RendererUpdateSettings.Current;
+    UnityEngine.GUILayout.Label("Updates");
+    bool autoUpdate = UnityEngine.GUILayout.Toggle(settings.AutoUpdate, "Automatically download updates");
+    bool beta = UnityEngine.GUILayout.Toggle(settings.ReceiveBetaUpdates, "Receive beta updates");
+    UnityEngine.GUILayout.Label("A downloaded update applies on the next game launch.");
+    if (autoUpdate != settings.AutoUpdate || beta != settings.ReceiveBetaUpdates)
+    {
+      settings.AutoUpdate = autoUpdate;
+      settings.ReceiveBetaUpdates = beta;
+      Infrastructure.Update.RendererUpdateSettings.Save();
+    }
+  }
+
+  private static void OnSaveGUI(UnityModManager.ModEntry modEntry)
+  {
+    Infrastructure.Update.RendererUpdateSettings.Save();
   }
 
   private static bool OnToggle(UnityModManager.ModEntry modEntry, bool value)

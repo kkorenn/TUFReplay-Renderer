@@ -2,9 +2,9 @@
   "Id": "TUFReplay-Renderer",
   "DisplayName": "TUFReplay Renderer",
   "Author": "impl",
-  "Version": "0.1.0-beta.3",
-  "AssemblyName": "TUFReplayRenderer.dll",
-  "EntryMethod": "TUFReplayRenderer.Main.Load",
+  "Version": "0.1.0-beta.4",
+  "AssemblyName": "TUFReplayRenderer.Loader.dll",
+  "EntryMethod": "TUFReplayRenderer.Loader.Entry.Load",
   "Requirements": ["TUFReplay"],
   "LoadAfter": ["AdofaiIpc", "TUFReplay"]
 }

@@ -48,6 +48,14 @@ public sealed class RenderCapabilitiesDto
   public bool Available;
   public string UnavailableReason;
 
+  public string RendererVersion;
+  public string TufReplayVersion;
+
+  /// <summary>Bridge contract compatibility: ok | tufreplay_outdated | renderer_outdated.</summary>
+  public string BridgeStatus;
+  public int BridgeApiVersionDetected;
+  public int BridgeApiVersionRequired;
+
   /// <summary>Background FFmpeg download: idle | downloading | installed | failed | unnecessary.</summary>
   public string FFmpegDownloadState;
   public int FFmpegDownloadProgressPercent;

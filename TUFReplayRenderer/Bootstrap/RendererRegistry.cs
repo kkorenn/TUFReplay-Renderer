@@ -29,9 +29,12 @@ public static class RendererRegistry
       Render.Enable(_harmony);
 
       // Registering the bridge is what makes TUFReplay's replay pipeline render-aware; without it
-      // the base mod behaves exactly as if this mod were not installed.
-      _bridge = new RenderCaptureBridgeAdapter();
-      RenderCaptureBridge.Register(_bridge);
+      // the base mod behaves exactly as if this mod were not installed. The reflection version
+      // check runs FIRST, and the typed bridge code lives in its own method: JIT only binds the
+      // bridge types when that method is actually called, so an incompatible TUFReplay degrades
+      // to "rendering unavailable" instead of a MissingMethodException.
+      if (BridgeCompat.Check())
+        RegisterBridge();
 
       Ipc.Enable();
     }
@@ -42,15 +45,29 @@ public static class RendererRegistry
     }
   }
 
-  public static void Shutdown()
+  [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+  private static void RegisterBridge()
   {
-    Ipc?.Disable();
+    _bridge = new RenderCaptureBridgeAdapter();
+    RenderCaptureBridge.Register(_bridge);
+  }
 
+  [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+  private static void UnregisterBridge()
+  {
     if (_bridge != null)
     {
       RenderCaptureBridge.Unregister(_bridge);
       _bridge = null;
     }
+  }
+
+  public static void Shutdown()
+  {
+    Ipc?.Disable();
+
+    if (_bridge != null)
+      UnregisterBridge();
 
     Render?.Disable();
 
